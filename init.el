@@ -6,7 +6,7 @@
 ;; Initialize all the ELPA packages
 (package-initialize)
 
-(add-to-list 'load-path "~/.emacs.d")
+(add-to-list 'load-path "~/.emacs.d/lisp")
 (load "prelude-packages.el")
 
 ;; Set window size
