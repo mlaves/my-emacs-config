@@ -6,6 +6,9 @@
 ;; Initialize all the ELPA packages
 (package-initialize)
 
+(add-to-list 'load-path "~/.emacs.d")
+(load "prelude-packages.el")
+
 ;; Set window size
 (setq initial-frame-alist '((top . 0) (left . 0) (width . 120) (height . 40)))
 
@@ -13,6 +16,7 @@
 (show-paren-mode 1)
 
 ;; ido-mode for file/buffer suggestions
+(require 'ido-yes-or-no)
 (ido-mode 1)
 (ido-yes-or-no-mode)
 
@@ -128,8 +132,8 @@
 (global-hl-line-mode t)
 
 ;; color theme
-;(load-theme 'solarized-light t)
-(load-theme 'sanityinc-tomorrow-bright t)
+(load-theme 'solarized-light t)
+;(load-theme 'sanityinc-tomorrow-bright t)
 
 ;; scroll one line at a time (less "jumpy" than defaults)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
