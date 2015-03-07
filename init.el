@@ -132,8 +132,9 @@
 (global-hl-line-mode t)
 
 ;; color theme
-(load-theme 'solarized-light t)
-;(load-theme 'sanityinc-tomorrow-bright t)
+;(load-theme 'solarized-light t)
+(require 'color-theme-sanityinc-tomorrow)
+(load-theme 'sanityinc-tomorrow-bright t)
 
 ;; scroll one line at a time (less "jumpy" than defaults)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time

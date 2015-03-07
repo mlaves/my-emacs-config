@@ -62,7 +62,7 @@
 
     solarized-theme
 
-    zenburn-theme
+    color-theme-sanityinc-tomorrow
 
     exec-path-from-shell))
 
