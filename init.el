@@ -58,7 +58,7 @@
     (if (company-manual-begin)
         (company-complete-common)
       (indent-according-to-mode)))
-(global-set-key [tab] 'complete-or-indent)
+;(global-set-key [tab] 'complete-or-indent)
 (eval-after-load 'company
   '(progn
      (define-key company-active-map (kbd "TAB") 'company-complete-selection)
