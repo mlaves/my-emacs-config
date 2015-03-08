@@ -64,12 +64,6 @@
      (define-key company-active-map (kbd "TAB") 'company-complete-selection)
      (define-key company-active-map [tab] 'company-complete-selection)))
 
-;; auto indentation
-(add-hook 'clojure-mode-hook '(lambda ()
-				(local-set-key (kbd "RET") 'newline-and-indent)))
-(add-hook 'lisp-mode-hook '(lambda ()
-			     (local-set-key (kbd "RET") 'newline-and-indent)))
-
 ;; Eldoc-mode for clojure: shows argument list of function call
 (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
 
