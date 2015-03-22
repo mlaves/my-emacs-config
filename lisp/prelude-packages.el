@@ -64,7 +64,10 @@
 
     color-theme-sanityinc-tomorrow
 
-    exec-path-from-shell))
+    exec-path-from-shell
+
+    ;; Quickhelp documentation popups
+    company-quickhelp))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))

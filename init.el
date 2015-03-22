@@ -1,7 +1,9 @@
 ;; Package list
 (require 'package)
 (add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/"))
+	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.milkbox.net/packages/") t)
 
 ;; Initialize all the ELPA packages
 (package-initialize)
@@ -63,6 +65,9 @@
   '(progn
      (define-key company-active-map (kbd "TAB") 'company-complete-selection)
      (define-key company-active-map [tab] 'company-complete-selection)))
+
+;; Quickhelp popup for company-mode
+(company-quickhelp-mode 1)
 
 ;; Eldoc-mode for clojure: shows argument list of function call
 (add-hook 'clojure-mode-hook 'turn-on-eldoc-mode)
