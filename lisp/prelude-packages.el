@@ -54,7 +54,7 @@
 
     ido-better-flex
 
-    popup
+    ;popup
 
     sr-speedbar
 
@@ -64,6 +64,7 @@
 
     color-theme-sanityinc-tomorrow
 
+    ;; pass env vars from shell to Emacs
     exec-path-from-shell
 
     ;; Quickhelp documentation popups
@@ -72,4 +73,3 @@
 (dolist (p my-packages)
   (when (not (package-installed-p p))
     (package-install p)))
-
