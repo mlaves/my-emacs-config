@@ -12,7 +12,7 @@
 (load "prelude-packages.el")
 
 ;; Set window size
-(setq initial-frame-alist '((top . 0) (left . 0) (width . 120) (height . 40)))
+(setq initial-frame-alist '((top . 0) (left . 0) (width . 100) (height . 30)))
 
 ;; Show parenthesis mode
 (show-paren-mode 1)
@@ -54,7 +54,7 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (setq company-idle-delay 0.1)
 (setq company-selection-wrap-around t)
-(setq company-minimum-prefix-length 2)
+(setq company-minimum-prefix-length 1)
 (defun complete-or-indent ()
     (interactive)
     (if (company-manual-begin)
@@ -80,7 +80,6 @@
 (global-set-key [f9] 'cider-jack-in)
 (global-set-key [f10] 'speedbar)
 (global-set-key [C-tab] 'indent-relative)
-(global-set-key [C-S-iso-lefttab] 'indent-relative)
 
 ;; F11 sets the window width to 80 characters
 (defun set-window-width (n)
@@ -102,16 +101,16 @@
 ;; Custom variables
 (custom-set-variables
  '(auto-save-default t)
- '(backup-inhibited t)
+ '(backup-inhibited t t)
  '(column-number-mode t)
- '(cursor-type (quote bar) t)
+ '(cursor-type (quote bar))
  '(delete-selection-mode t)
  '(global-company-mode t)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
- '(speedbar-show-unknown-files t)
  '(scroll-bar-mode t)
+ '(speedbar-show-unknown-files t)
  '(visible-bell t))
 
 (if window-system
@@ -120,15 +119,12 @@
 ;; Set bigger fonts
 ;(set-default-font 'default nil "Courier-New-13")
 (when (member "Monaco" (font-family-list))
-  (set-face-attribute 'default nil :font "Monaco-13"))
+  (set-face-attribute 'default nil :font "Monaco-12"))
 
 ;; use cmd as meta
 (setq mac-option-modifier nil
       mac-command-modifier 'meta
       x-select-enable-clipboard t)
-
-;; Highlight current line
-(global-hl-line-mode t)
 
 ;; color theme
 ;(load-theme 'solarized-light t)
@@ -170,3 +166,9 @@
                    'comint-previous-input)
                  (define-key inferior-octave-mode-map [down]
                    'comint-next-input)))
+
+;; Settings for Python
+(require 'company-jedi)
+(autoload 'jedi:setup "jedi" nil t)
+(add-hook 'python-mode-hook 'jedi:setup)
+(add-to-list 'company-backends 'company-jedi)
