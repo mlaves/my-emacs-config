@@ -1,2 +1,6 @@
 elpa/
 places
+.python-environments/
+auto-save-list/
+ido.last
+smex-items
