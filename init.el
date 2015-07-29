@@ -80,7 +80,6 @@
 (global-set-key [f9] 'cider-jack-in)
 (global-set-key [f10] 'speedbar)
 (global-set-key [C-tab] 'indent-relative)
-(global-set-key [C-S-iso-lefttab] 'indent-relative)
 
 ;; F11 sets the window width to 80 characters
 (defun set-window-width (n)
@@ -127,9 +126,6 @@
       mac-command-modifier 'meta
       x-select-enable-clipboard t)
 
-;; Highlight current line
-(global-hl-line-mode t)
-
 ;; color theme
 ;(load-theme 'solarized-light t)
 (require 'color-theme-sanityinc-tomorrow)
@@ -157,7 +153,7 @@
 (require 'exec-path-from-shell)
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
-
+  
 ;; Settings for GNU Octave
 
 ;; makes run-octave's prompt read-only
@@ -170,3 +166,11 @@
                    'comint-previous-input)
                  (define-key inferior-octave-mode-map [down]
                    'comint-next-input)))
+
+;; Settings for Python
+(require 'company-jedi)
+(autoload 'jedi:setup "jedi" nil t)
+(add-hook 'python-mode-hook 'jedi:setup)
+(add-hook 'python-mode-hook 'electric-pair-mode)
+(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+(add-to-list 'company-backends 'company-jedi)

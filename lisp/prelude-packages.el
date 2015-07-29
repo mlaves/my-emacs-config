@@ -68,7 +68,11 @@
     exec-path-from-shell
 
     ;; Quickhelp documentation popups
-    company-quickhelp))
+    company-quickhelp
+
+    ;; Python development
+    company-jedi
+    ))
 
 (dolist (p my-packages)
   (when (not (package-installed-p p))
