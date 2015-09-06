@@ -32,11 +32,11 @@
 
 ;; rainbow delimiters
 (require 'rainbow-delimiters)
-;(global-rainbow-delimiters-mode)
-(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
+(global-rainbow-delimiters-mode)
+;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+;; (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+;; (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
 
 ;; paredit
 (require 'paredit)
@@ -82,26 +82,25 @@
 (global-set-key [C-tab] 'indent-relative)
 
 ;; F11 sets the window width to 80 characters
-(defun set-window-width (n)
-  "Set the selected window's width."
-  (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
-(defun set-80-columns ()
-  "Set the selected window to 80 columns."
-  (interactive)
-  (set-window-width 80))
-(global-set-key [f11] 'set-80-columns)
+;; (defun set-window-width (n)
+;;   "Set the selected window's width."
+;;   (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
+;; (defun set-80-columns ()
+;;   "Set the selected window to 80 columns."
+;;   (interactive)
+;;   (set-window-width 80))
+;; (global-set-key [f11] 'set-80-columns)
 
 ;; Highlight current line
 (global-hl-line-mode t)
 
 ;; Line numbers
 (global-linum-mode t)
-;(add-hook 'clojure-mode-hook 'linum-mode)
 
 ;; Custom variables
 (custom-set-variables
  '(auto-save-default t)
- '(backup-inhibited t t)
+ '(backup-inhibited t)
  '(column-number-mode t)
  '(cursor-type (quote bar))
  '(delete-selection-mode t)
@@ -155,7 +154,6 @@
   (exec-path-from-shell-initialize))
 
 ;; Settings for GNU Octave
-
 ;; makes run-octave's prompt read-only
 (setq inferior-octave-prompt-read-only t)
 
