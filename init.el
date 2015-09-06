@@ -170,7 +170,10 @@
 (add-hook 'python-mode-hook 'jedi:setup)
 (add-to-list 'company-backends 'company-jedi)
 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'python-mode-hook 'electric-pair-mode)
 
+(when (executable-find "ipython")
+  (setq python-shell-interpreter "ipython"))
 (defun my-run-python ()
   (save-selected-window
     (switch-to-buffer-other-window (process-buffer (python-shell-get-or-create-process (python-shell-parse-command))))))
