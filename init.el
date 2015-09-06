@@ -185,3 +185,5 @@
                                         ;
 ;(add-hook 'python-mode-hook 'my-python)
 (global-set-key [f10] 'run-python)
+; Disable undo for inferior python buffer
+(add-hook 'inferior-python-mode-hook 'buffer-disable-undo)
