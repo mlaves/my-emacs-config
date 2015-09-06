@@ -12,7 +12,7 @@
 (load "prelude-packages.el")
 
 ;; Set window size
-(setq initial-frame-alist '((top . 0) (left . 0) (width . 100) (height . 30)))
+;(setq initial-frame-alist '((top . 0) (left . 0) (width . 100) (height . 30)))
 
 ;; Show parenthesis mode
 (show-paren-mode 1)
@@ -172,3 +172,7 @@
 (autoload 'jedi:setup "jedi" nil t)
 (add-hook 'python-mode-hook 'jedi:setup)
 (add-to-list 'company-backends 'company-jedi)
+(add-hook 'python-mode-hook (lambda () (switch-to-buffer (last-buffer))
+                              (run-python (python-shell-parse-command))
+                              (split-window-sensibly)
+                              (switch-to-buffer-other-window (python-shell-get-buffer))))
