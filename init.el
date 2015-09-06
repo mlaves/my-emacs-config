@@ -32,11 +32,10 @@
 
 ;; rainbow delimiters
 (require 'rainbow-delimiters)
-(global-rainbow-delimiters-mode)
-;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-;; (add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
-;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-;; (add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
 
 ;; paredit
 (require 'paredit)
@@ -174,3 +173,4 @@
                               (run-python (python-shell-parse-command))
                               (split-window-sensibly)
                               (switch-to-buffer-other-window (python-shell-get-buffer))))
+(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
