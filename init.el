@@ -171,19 +171,10 @@
 (add-to-list 'company-backends 'company-jedi)
 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
 
-(defun run-python-once ()
-  (remove-hook 'python-mode-hook 'run-python-once)
-  (switch-to-buffer (last-buffer))
-  (run-python (python-shell-parse-command))
-  (split-window-sensibly)
-  (switch-to-buffer-other-window (python-shell-get-buffer))
-  )
+(defun my-run-python ()
+  (save-selected-window
+    (switch-to-buffer-other-window (process-buffer (python-shell-get-or-create-process (python-shell-parse-command))))))
+(add-hook 'python-mode-hook 'my-run-python)
 
-(defun my-python ()
-  (run-python (python-shell-parse-command) nil t))
-
-                                        ;
-;(add-hook 'python-mode-hook 'my-python)
-(global-set-key [f10] 'run-python)
 ; Disable undo for inferior python buffer
 (add-hook 'inferior-python-mode-hook 'buffer-disable-undo)
