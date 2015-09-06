@@ -169,8 +169,14 @@
 (autoload 'jedi:setup "jedi" nil t)
 (add-hook 'python-mode-hook 'jedi:setup)
 (add-to-list 'company-backends 'company-jedi)
-(add-hook 'python-mode-hook (lambda () (switch-to-buffer (last-buffer))
-                              (run-python (python-shell-parse-command))
-                              (split-window-sensibly)
-                              (switch-to-buffer-other-window (python-shell-get-buffer))))
 (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+
+(defun run-python-once ()
+  (remove-hook 'python-mode-hook 'run-python-once)
+  (switch-to-buffer (last-buffer))
+  (run-python (python-shell-parse-command))
+  (split-window-sensibly)
+  (switch-to-buffer-other-window (python-shell-get-buffer))
+  )
+
+(add-hook 'python-mode-hook 'run-python-once)
