@@ -77,7 +77,7 @@
 (global-set-key [f7] 'paredit-mode)
 (global-set-key [f8] 'other-window)
 (global-set-key [f9] 'cider-jack-in)
-(global-set-key [f10] 'speedbar)
+(global-set-key [f11] 'speedbar)
 (global-set-key [C-tab] 'indent-relative)
 
 ;; F11 sets the window width to 80 characters
@@ -179,4 +179,9 @@
   (switch-to-buffer-other-window (python-shell-get-buffer))
   )
 
-(add-hook 'python-mode-hook 'run-python-once)
+(defun my-python ()
+  (run-python (python-shell-parse-command) nil t))
+
+                                        ;
+(add-hook 'python-mode-hook 'my-python)
+(global-set-key [f10] 'run-python)
