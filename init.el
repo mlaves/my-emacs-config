@@ -183,5 +183,5 @@
   (run-python (python-shell-parse-command) nil t))
 
                                         ;
-(add-hook 'python-mode-hook 'my-python)
+;(add-hook 'python-mode-hook 'my-python)
 (global-set-key [f10] 'run-python)
