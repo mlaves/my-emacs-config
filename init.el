@@ -163,6 +163,7 @@
                    'comint-previous-input)
                  (define-key inferior-octave-mode-map [down]
                    'comint-next-input)))
+(add-hook 'octave-mode-hook 'run-octave)
 
 ;; Settings for Python
 (require 'company-jedi)
@@ -181,3 +182,12 @@
 
 ; Disable undo for inferior python buffer
 (add-hook 'inferior-python-mode-hook 'buffer-disable-undo)
+
+;; makes up and down arrow keys behave in interaction buffer as in shell
+(add-hook 'inferior-python-mode-hook
+          (lambda ()
+            (define-key inferior-python-mode-map [up] 'comint-previous-input)
+            (define-key inferior-python-mode-map [down] 'comint-next-input)))
+
+(add-hook 'inferior-python-mode-hook
+          (lambda () (setq comint-prompt-read-only t)))
