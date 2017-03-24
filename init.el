@@ -11,9 +11,6 @@
 (add-to-list 'load-path "~/.emacs.d/lisp")
 (load "prelude-packages.el")
 
-;; Set window size
-(setq initial-frame-alist '((top . 0) (left . 0) (width . 120) (height . 40)))
-
 ;; Show parenthesis mode
 (show-paren-mode 1)
 
@@ -32,11 +29,11 @@
 
 ;; rainbow delimiters
 (require 'rainbow-delimiters)
-;(global-rainbow-delimiters-mode)
-(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
-(add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+;(add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+;(add-hook 'cider-repl-mode-hook 'rainbow-delimiters-mode)
+;(add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+;(add-hook 'lisp-mode-hook 'rainbow-delimiters-mode)
 
 ;; paredit
 (require 'paredit)
@@ -50,11 +47,13 @@
      'paredit-backward-delete
      'paredit-close-round)
 
-;; Enable global company-mode
-(add-hook 'after-init-hook 'global-company-mode)
+;; Enable company-mode for programming related modes
+(add-hook 'prog-mode-hook 'global-company-mode)
 (setq company-idle-delay 0.1)
 (setq company-selection-wrap-around t)
 (setq company-minimum-prefix-length 2)
+
+;; Remap TAB to complete-or-indent
 (defun complete-or-indent ()
     (interactive)
     (if (company-manual-begin)
@@ -78,25 +77,13 @@
 (global-set-key [f7] 'paredit-mode)
 (global-set-key [f8] 'other-window)
 (global-set-key [f9] 'cider-jack-in)
-(global-set-key [f10] 'speedbar)
 (global-set-key [C-tab] 'indent-relative)
-
-;; F11 sets the window width to 80 characters
-(defun set-window-width (n)
-  "Set the selected window's width."
-  (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
-(defun set-80-columns ()
-  "Set the selected window to 80 columns."
-  (interactive)
-  (set-window-width 80))
-(global-set-key [f11] 'set-80-columns)
 
 ;; Highlight current line
 (global-hl-line-mode t)
 
 ;; Line numbers
 (global-linum-mode t)
-;(add-hook 'clojure-mode-hook 'linum-mode)
 
 ;; Custom variables
 (custom-set-variables
@@ -105,32 +92,32 @@
  '(column-number-mode t)
  '(cursor-type (quote bar) t)
  '(delete-selection-mode t)
- '(global-company-mode t)
+ '(global-company-mode nil)
  '(indent-tabs-mode nil)
  '(inhibit-startup-screen t)
  '(initial-scratch-message nil)
  '(speedbar-show-unknown-files t)
- '(scroll-bar-mode t)
+ '(scroll-bar-mode nil)
  ;'(visible-bell t)
- )
+ '(ring-bell-function 'ignore)
+)
 
 (if window-system
     (tool-bar-mode -1))
 
 ;; Set bigger fonts
 ;(set-default-font 'default nil "Courier-New-13")
-(when (member "Monaco" (font-family-list))
-  (set-face-attribute 'default nil :font "Monaco-13"))
+(when (member "Source Code Pro" (font-family-list))
+  (set-face-attribute 'default nil :font "Source Code Pro-13"))
+
+;; color theme
+(require 'color-theme-sanityinc-tomorrow)
+(load-theme 'sanityinc-tomorrow-night t)
 
 ;; use cmd as meta
 (setq mac-option-modifier nil
       mac-command-modifier 'meta
       x-select-enable-clipboard t)
-
-;; color theme
-;(load-theme 'solarized-light t)
-(require 'color-theme-sanityinc-tomorrow)
-(load-theme 'sanityinc-tomorrow-bright t)
 
 ;; scroll one line at a time (less "jumpy" than defaults)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -154,19 +141,6 @@
 (require 'exec-path-from-shell)
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
-  
-;; Settings for GNU Octave
-
-;; makes run-octave's prompt read-only
-(setq inferior-octave-prompt-read-only t)
-
-;; makes up and down arrow keys behave in interaction buffer as in shell
-(add-hook 'inferior-octave-mode-hook
-               (lambda ()
-                 (define-key inferior-octave-mode-map [up]
-                   'comint-previous-input)
-                 (define-key inferior-octave-mode-map [down]
-                   'comint-next-input)))
 
 ;; Settings for Python
 (require 'company-jedi)

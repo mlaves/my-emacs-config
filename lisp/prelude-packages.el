@@ -56,11 +56,11 @@
 
     ;popup
 
-    sr-speedbar
+    ;sr-speedbar
 
     markdown-mode
 
-    solarized-theme
+    ;solarized-theme
 
     color-theme-sanityinc-tomorrow
 
