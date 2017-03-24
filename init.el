@@ -111,7 +111,8 @@
  '(initial-scratch-message nil)
  '(speedbar-show-unknown-files t)
  '(scroll-bar-mode t)
- '(visible-bell t))
+ ;'(visible-bell t)
+ )
 
 (if window-system
     (tool-bar-mode -1))
@@ -171,6 +172,25 @@
 (require 'company-jedi)
 (autoload 'jedi:setup "jedi" nil t)
 (add-hook 'python-mode-hook 'jedi:setup)
-(add-hook 'python-mode-hook 'electric-pair-mode)
-(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
 (add-to-list 'company-backends 'company-jedi)
+(add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+(add-hook 'python-mode-hook 'electric-pair-mode)
+
+(when (executable-find "ipython")
+  (setq python-shell-interpreter "ipython"))
+(defun my-run-python ()
+  (save-selected-window
+    (switch-to-buffer-other-window (process-buffer (python-shell-get-or-create-process (python-shell-parse-command))))))
+(add-hook 'python-mode-hook 'my-run-python)
+
+; Disable undo for inferior python buffer
+(add-hook 'inferior-python-mode-hook 'buffer-disable-undo)
+
+;; makes up and down arrow keys behave in interaction buffer as in shell
+(add-hook 'inferior-python-mode-hook
+          (lambda ()
+            (define-key inferior-python-mode-map [up] 'comint-previous-input)
+            (define-key inferior-python-mode-map [down] 'comint-next-input)))
+
+(add-hook 'inferior-python-mode-hook
+          (lambda () (setq comint-prompt-read-only t)))
