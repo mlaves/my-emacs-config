@@ -51,6 +51,7 @@
 ;; ===================================
 
 (global-linum-mode t)               ;; Enable line numbers globally
+(global-hl-line-mode t)             ;; Highlight current line
 (show-paren-mode t)
 
 ;; ido-mode for file/buffer suggestions
