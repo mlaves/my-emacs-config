@@ -51,7 +51,12 @@
 ;; ===================================
 
 (global-linum-mode t)               ;; Enable line numbers globally
+(global-hl-line-mode t)
 (show-paren-mode t)
+
+;; Show line at 80 characters
+(setq-default display-fill-column-indicator-column 80)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
 ;; Custom keys
 (global-set-key [f5] 'other-window)
