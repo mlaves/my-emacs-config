@@ -51,8 +51,11 @@
 ;; ===================================
 
 (global-linum-mode t)               ;; Enable line numbers globally
-(global-hl-line-mode t)             ;; Highlight current line
 (show-paren-mode t)
+
+;; Custom keys
+(global-set-key [f5] 'other-window)
+(global-set-key [f6] 'elpy-doc)
 
 ;; ido-mode for file/buffer suggestions
 (require 'ido-yes-or-no)
@@ -88,6 +91,7 @@
  '(initial-scratch-message nil)
  '(package-selected-packages
    '(elpy smex rainbow-delimiters paredit material-theme markdown-mode magit ido-yes-or-no color-theme-sanityinc-tomorrow better-defaults amx))
+ '(python-shell-interpreter "ipython")
  '(ring-bell-function 'ignore)
  '(scroll-bar-mode nil))
 
@@ -124,6 +128,10 @@
 
 ;; Settings for Python
 (elpy-enable)
+
+;; Set
+(define-key elpy-mode-map (kbd "C-c RET") nil)
+(define-key elpy-mode-map (kbd "C-c RET") 'elpy-shell-send-statement-and-step)
 
 ;; Enable Flycheck
 (when (require 'flycheck nil t)
