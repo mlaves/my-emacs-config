@@ -157,7 +157,7 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
-(setenv "WORKON_HOME" "/home/CODE1/320171775/miniforge3/envs/")
+(setenv "WORKON_HOME" "/home/laves/miniforge3/envs/")
 (setq elpy-rpc-virtualenv-path 'current)
 
 ;; Settings for Python
