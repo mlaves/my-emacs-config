@@ -36,6 +36,7 @@
       py-autopep8
       blacken
       jedi
+      idle-highlight-mode
     )
   )
 
@@ -157,10 +158,16 @@
 (add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
 
+;; Idle-highlight mode
+(defun my-prog-mode-hook ()
+  (idle-highlight-mode t))
+
+(add-hook 'prog-mode-hook 'my-prog-mode-hook)
+
+;; Settings for Python
 (setenv "WORKON_HOME" "/home/laves/miniforge3/envs/")
 (setq elpy-rpc-virtualenv-path 'current)
 
-;; Settings for Python
 (elpy-enable)
 
 ;; Set
