@@ -1,193 +1,140 @@
-;; .emacs.d/init.el
+;;; init.el --- Updated for Emacs 30
 
-;; ===================================
-;; MELPA Package Support
-;; ===================================
-;; Enables basic packaging support
+;; UI basics
+(setq inhibit-startup-screen t
+      initial-scratch-message nil
+      make-backup-files nil
+      ring-bell-function 'ignore)
+
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+(global-hl-line-mode 1)
+(show-paren-mode 1)
+
+;; Set default window size
+(setq default-frame-alist
+      '((width . 120)     ;; characters
+        (height . 50)))   ;; characters
+
+(when (eq system-type 'darwin)
+  (setq mac-right-option-modifier 'none   ; Right Option for special chars
+       ;; mac-command-modifier 'meta       ; Command as Meta
+  ))
+
+
+;; Package sources: GNU + NonGNU + MELPA
 (require 'package)
+(setq package-archives
+      '(("gnu"    . "https://elpa.gnu.org/packages/")
+        ("nongnu" . "https://elpa.nongnu.org/nongnu/")
+        ("melpa"  . "https://melpa.org/packages/")))
 
-;; Adds the Melpa archive to the list of available repositories
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-
-;; Initializes the package infrastructure
 (package-initialize)
-
-;; If there are no archived package contents, refresh them
-(when (not package-archive-contents)
+(unless package-archive-contents
   (package-refresh-contents))
 
-;; Installs packages
-;;
-;; myPackages contains a list of package names
-(defvar myPackages
-  '(
-      better-defaults                 ;; Set up some better Emacs defaults
-      paredit
-      ido-completing-read+
-      amx
-      rainbow-delimiters
-      magit
-      ido-yes-or-no
-      markdown-mode
-      color-theme-sanityinc-tomorrow
-      elpy
-      flycheck
-      py-autopep8
-      blacken
-      jedi
-      idle-highlight-mode
-    )
-  )
+;; Bootstrap use-package
+(unless (package-installed-p 'use-package)
+  (package-install 'use-package))
+(require 'use-package)
+(setq use-package-always-ensure t)
 
-;; Scans the list in myPackages
-;; If the package listed is not already installed, install it
-(mapc #'(lambda (package)
-          (unless (package-installed-p package)
-            (package-install package)))
-      myPackages)
-      
-;; ===================================
-;; Basic Customization
-;; ===================================
+;; Theme
+(use-package color-theme-sanityinc-tomorrow
+  :init (load-theme 'sanityinc-tomorrow-night t))
 
-;(global-linum-mode t)               ;; Enable line numbers globally
-(global-hl-line-mode t)
-(show-paren-mode t)
-(xterm-mouse-mode 1)                ;; mouse support in terminal mode
-
-;; Show line at 80 characters
-(setq-default display-fill-column-indicator-column 80)
+(setq-default display-fill-column-indicator-column 120)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
 
-;; Custom keys
-(global-set-key [f5] 'other-window)
+(global-display-line-numbers-mode 1)
+(column-number-mode t)
 
-;; ido-mode for file/buffer suggestions
-(require 'ido-yes-or-no)
-(ido-mode 1)
-(ido-everywhere 1)
-(ido-yes-or-no-mode)
+;; Use bar cursor
+(setq-default cursor-type 'bar)
 
-(require 'ido-completing-read+)
-(ido-ubiquitous-mode 1)
+;; Modern completion stack
+(use-package vertico
+  :init (vertico-mode))
 
-;; ido for M-x
-(require 'amx)
-(amx-mode 1)
+(use-package orderless
+  :custom
+  (completion-styles '(orderless))
+  (completion-category-defaults nil)
+  (completion-category-overrides '((file (styles basic partial-completion)))))
 
-;; rainbow delimiters
-(require 'rainbow-delimiters)
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(use-package consult)
+(use-package marginalia
+  :init (marginalia-mode))
 
- ;; Custom variables
- 
+;; Magit (currently disabled)
+;; (use-package magit)
+
+;; Rainbow delimiters for coding
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+
+;; Company auto completion
+(use-package company
+  :init (global-company-mode 1)
+  :custom
+  (company-idle-delay 0.1)
+  (company-minimum-prefix-length 1))
+
+;; Flymake for syntax checking
+(add-hook 'prog-mode-hook #'flymake-mode)
+
+;; Markdown support
+(use-package markdown-mode
+  :mode ("\\.md\\'" . markdown-mode))
+
+;; Remember recently opened files
+(recentf-mode 1)
+(setq recentf-max-saved-items 50)
+
+;; Save minibuffer history between sessions
+(savehist-mode 1)
+
+;; Show matching keybindings - very helpful for learning
+(use-package which-key
+  :init (which-key-mode)
+  :config (setq which-key-idle-delay 0.5))
+
+;; Better undo/redo
+(use-package undo-tree
+  :init (global-undo-tree-mode)
+  :config (setq undo-tree-auto-save-history nil)) ; avoid cluttering directories
+
+;; Smarter indentation and whitespace
+(setq-default indent-tabs-mode nil          ; Use spaces, not tabs
+              tab-width 4                    ; Display tabs as 4 spaces
+              fill-column 120)               ; Matches your indicator
+
+;; Clean up trailing whitespace on save
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; Move through windows with Shift+arrows
+(windmove-default-keybindings)
+
+;; Useful keybindings with consult
+(global-set-key (kbd "C-x b") 'consult-buffer)      ; Better buffer switching
+(global-set-key (kbd "C-c r") 'consult-recent-file) ; Quick recent files
+(global-set-key (kbd "C-c g") 'consult-grep)        ; Search in project
+
+;; Better terminal colors
+(unless (display-graphic-p)
+  (xterm-mouse-mode 1)  ; Enable mouse in terminal
+  (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
+  (global-set-key (kbd "<mouse-5>") 'scroll-down-line))
+
+(provide 'init)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
-
  ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector
-   (vector "#1d1f21" "#cc6666" "#b5bd68" "#f0c674" "#81a2be" "#b294bb" "#8abeb7" "#c5c8c6"))
- '(auto-save-default t)
- '(backup-inhibited t t)
- '(beacon-color "#cc6666")
- '(column-number-mode t)
- '(cursor-type 'bar)
- '(custom-safe-themes
-   '("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" default))
- '(delete-selection-mode t)
- '(elpy-rpc-python-command "python")
- '(fci-rule-color "#373b41")
- '(flycheck-color-mode-line-face-to-color 'mode-line-buffer-id)
- '(frame-background-mode 'dark)
- '(indent-tabs-mode nil)
- '(inhibit-startup-screen t)
- '(initial-scratch-message nil)
- '(package-selected-packages
-   '(elpy smex rainbow-delimiters paredit material-theme markdown-mode magit ido-yes-or-no color-theme-sanityinc-tomorrow better-defaults amx))
- '(python-shell-interpreter "ipython")
- '(ring-bell-function 'ignore)
- '(scroll-bar-mode nil)
- '(vc-annotate-background nil)
- '(vc-annotate-color-map
-   '((20 . "#cc6666")
-     (40 . "#de935f")
-     (60 . "#f0c674")
-     (80 . "#b5bd68")
-     (100 . "#8abeb7")
-     (120 . "#81a2be")
-     (140 . "#b294bb")
-     (160 . "#cc6666")
-     (180 . "#de935f")
-     (200 . "#f0c674")
-     (220 . "#b5bd68")
-     (240 . "#8abeb7")
-     (260 . "#81a2be")
-     (280 . "#b294bb")
-     (300 . "#cc6666")
-     (320 . "#de935f")
-     (340 . "#f0c674")
-     (360 . "#b5bd68")))
- '(vc-annotate-very-old-color nil)
- '(window-divider-mode nil))
-
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-
-;; company-mode for elisp files
-(add-hook 'emacs-lisp-mode-hook 'company-mode)
-
-;; linum-mode for elisp
-(add-hook 'emacs-lisp-mode-hook 'linum-mode)
-
-;; color theme
-(require 'color-theme-sanityinc-tomorrow)
-(load-theme 'sanityinc-tomorrow-night t)
-
-;; Open file at same position as last time
-(require 'saveplace)
-(setq-default save-place t)
-
-;; Markdown Mode
-(autoload 'markdown-mode "markdown-mode"
-   "Major mode for editing Markdown files" t)
-(add-to-list 'auto-mode-alist '("\\.markdown\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-
-;; Idle-highlight mode
-(defun my-prog-mode-hook ()
-  (idle-highlight-mode t))
-
-(add-hook 'prog-mode-hook 'my-prog-mode-hook)
-
-;; Settings for Python
-(setenv "WORKON_HOME" "/home/laves/miniforge3/envs/")
-(setq elpy-rpc-virtualenv-path 'current)
-
-(elpy-enable)
-
-;; Set
-(define-key elpy-mode-map (kbd "C-c RET") nil)
-(define-key elpy-mode-map (kbd "C-c RET") 'elpy-shell-send-statement-and-step)
-(define-key elpy-mode-map (kbd "<f6>") 'elpy-doc)
-
-;; Enable linum-mode for elpy
-(add-hook 'elpy-mode-hook 'linum-mode)
-
-;; Enable Flycheck
-(when (require 'flycheck nil t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-  
-;; Enable autopep8
-(require 'py-autopep8)
-(add-hook 'elpy-mode-hook 'py-autopep8-enable-on-save)
-
-;; User-Defined init.el ends here
+ '(package-selected-packages nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
