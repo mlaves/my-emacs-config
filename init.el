@@ -47,6 +47,7 @@
 
 (setq-default display-fill-column-indicator-column 120)
 (add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+(add-hook 'prog-mode-hook #'electric-pair-mode)
 
 ;; Show whitespace in prog-mode
 (add-hook 'prog-mode-hook #'whitespace-mode)
@@ -60,6 +61,9 @@
 
 ;; Use bar cursor
 (setq-default cursor-type 'bar)
+
+;; Modern text selection behavior
+(delete-selection-mode 1)
 
 ;; Modern completion stack
 (use-package vertico
