@@ -23,7 +23,6 @@
        ;; mac-command-modifier 'meta       ; Command as Meta
   ))
 
-
 ;; Package sources: GNU + NonGNU + MELPA
 (require 'package)
 (setq package-archives
@@ -118,7 +117,7 @@
   :config (setq undo-tree-auto-save-history nil)) ; avoid cluttering directories
 
 ;; Smarter indentation and whitespace
-(setq-default indent-tabs-mode nil          ; Use spaces, not tabs
+(setq-default indent-tabs-mode nil           ; Use spaces, not tabs
               tab-width 4                    ; Display tabs as 4 spaces
               fill-column 120)               ; Matches your indicator
 
@@ -138,6 +137,11 @@
   (xterm-mouse-mode 1)  ; Enable mouse in terminal
   (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
   (global-set-key (kbd "<mouse-5>") 'scroll-down-line))
+
+(use-package pyvenv
+  :ensure t
+  :config
+  (pyvenv-mode 1))
 
 (provide 'init)
 (custom-set-variables

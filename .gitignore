@@ -5,3 +5,5 @@ places
 .DS_Store
 history
 recentf
+eln-cache/
+tree-sitter/
